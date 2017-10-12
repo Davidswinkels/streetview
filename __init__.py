@@ -80,7 +80,7 @@ def panoids(lat, lon, closest=False, disp=False, google_only=FALSE):
     if not google_only:
         pans = re.findall('\[[0-9]+,"(.+?)"\].+?\[\[null,null,(-?[0-9]+.[0-9]+),(-?[0-9]+.[0-9]+)', resp.text)
     if google_only:
-        re.findall('\[[0-9]+,"(.+?)"\].+?Google"\]\]\]\].+?\[\[null,null,(-?[0-9]+.[0-9]+),(-?[0-9]+.[0-9]+)', resp.text)
+        pans re.findall('\[[0-9]+,"(.+?)"\].+?Google"\]\]\]\].+?\[\[null,null,(-?[0-9]+.[0-9]+),(-?[0-9]+.[0-9]+)', resp.text)
     pans = [{
         "panoid": p[0],
         "lat": float(p[1]),

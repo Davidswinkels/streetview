@@ -54,11 +54,14 @@ def _panoids_data(lat, lon):
     return requests.get(url)
 
 
-def panoids(lat, lon, closest=False, disp=False):
+def panoids(lat, lon, closest=False, disp=False, google_only=FALSE):
     """
     Gets the closest panoramas (ids) to the GPS coordinates.
-    If the 'closest' boolean parameter is set to true, only the closest panorama
-    will be gotten (at all the available dates)
+    
+    :param closest: If true, select only closest panorama (at all the available dates)
+    :param disp: If true, print panorama info
+    :param google_only: If true, only panoramas from google streetview cars are allowed (and not from users)
+    
     """
 
     resp = _panoids_data(lat, lon)
@@ -74,7 +77,10 @@ def panoids(lat, lon, closest=False, disp=False):
     # 2012
     # 2013
     # 2014
-    pans = re.findall('\[[0-9]+,"(.+?)"\].+?\[\[null,null,(-?[0-9]+.[0-9]+),(-?[0-9]+.[0-9]+)', resp.text)
+    if not google_only:
+        pans = re.findall('\[[0-9]+,"(.+?)"\].+?\[\[null,null,(-?[0-9]+.[0-9]+),(-?[0-9]+.[0-9]+)', resp.text)
+    if google_only:
+        re.findall('\[[0-9]+,"(.+?)"\].+?Google"\]\]\]\].+?\[\[null,null,(-?[0-9]+.[0-9]+),(-?[0-9]+.[0-9]+)', resp.text)
     pans = [{
         "panoid": p[0],
         "lat": float(p[1]),
